@@ -17,10 +17,10 @@ The application runs on the JVM using the Java Development Kit (JDK). Git and Gi
 
 ## Useful Websites
 
-* [Kotlin Official Documentation](https://kotlinlang.org/docs/home.html)
-* [Kotlin Tour - Classes](https://kotlinlang.org/docs/kotlin-tour-classes.html)
-* [Kotlin Tour - Collections](https://kotlinlang.org/docs/kotlin-tour-collections.html)
-* [Kotlin Null Safety](https://kotlinlang.org/docs/null-safety.html)
+- [Kotlin Official Documentation](https://kotlinlang.org/docs/home.html)
+- [Kotlin Tour - Classes](https://kotlinlang.org/docs/kotlin-tour-classes.html)
+- [Kotlin Tour - Collections](https://kotlinlang.org/docs/kotlin-tour-collections.html)
+- [Kotlin Null Safety](https://kotlinlang.org/docs/null-safety.html)
 
 ## Future Work
 
