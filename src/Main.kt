@@ -1,7 +1,5 @@
 /**
- * Represents a single product in the inventory.
- * Uses a data class so Kotlin automatically generates toString(), equals(), and copy(),
- * which is useful for a simple data-holding object like this.
+ * Represents a product stored in the inventory.
  */
 data class Product(
     val id: Int,
@@ -12,49 +10,57 @@ data class Product(
 )
 
 /**
- * Prompts the user for product details and adds a new Product to the list.
- * The new ID is generated automatically based on the highest existing ID.
+ * Creates a new product and adds it to the inventory.
  */
 fun addProduct(products: MutableList<Product>) {
     print("Enter product name: ")
-    val name = readLine() ?: ""  // Default to empty string if input fails
+    val name = readLine() ?: ""
 
     print("Enter category: ")
     val category = readLine() ?: ""
 
     print("Enter quantity: ")
-    val quantity = readLine()?.toIntOrNull() ?: 0  // Default to 0 if input isn't a valid number
+    val quantity = readLine()?.toIntOrNull() ?: 0
 
     print("Enter minimum stock: ")
     val minimumStock = readLine()?.toIntOrNull() ?: 0
 
-    // Find the highest existing ID and add 1; if the list is empty, start at 1
+    // Generate the next available product ID.
     val newId = (products.maxOfOrNull { it.id } ?: 0) + 1
-    products.add(Product(newId, name, category, quantity, minimumStock))
+
+    products.add(
+        Product(newId, name, category, quantity, minimumStock)
+    )
+
     println("Product added successfully.")
 }
 
 /**
- * Prints every product currently in the inventory.
+ * Displays all products currently stored in the inventory.
  */
 fun displayProducts(products: MutableList<Product>) {
     if (products.isEmpty()) {
         println("No products in inventory.")
         return
     }
+
     for (product in products) {
-        println("ID: ${product.id} | ${product.name} (${product.category}) - Qty: ${product.quantity} | Min: ${product.minimumStock}")
+        println(
+            "ID: ${product.id} | " +
+                    "${product.name} (${product.category}) - " +
+                    "Qty: ${product.quantity} | " +
+                    "Min: ${product.minimumStock}"
+        )
     }
 }
 
 /**
- * Increases the quantity of an existing product by a given amount.
+ * Adds stock to an existing product.
  */
 fun addStock(products: MutableList<Product>) {
     print("Enter product ID: ")
     val id = readLine()?.toIntOrNull() ?: -1
 
-    // Look up the product by ID; null if not found
     val product = products.find { it.id == id }
 
     if (product == null) {
@@ -71,12 +77,12 @@ fun addStock(products: MutableList<Product>) {
     }
 
     product.quantity += amount
+
     println("Stock updated. New quantity: ${product.quantity}")
 }
 
 /**
- * Decreases the quantity of an existing product by a given amount.
- * Prevents removing more stock than is currently available.
+ * Removes stock from an existing product.
  */
 fun removeStock(products: MutableList<Product>) {
     print("Enter product ID: ")
@@ -97,21 +103,24 @@ fun removeStock(products: MutableList<Product>) {
         return
     }
 
-    // Prevent negative stock
+    // Prevent the inventory quantity from becoming negative.
     if (amount > product.quantity) {
         println("Not enough stock. Current quantity: ${product.quantity}")
         return
     }
 
     product.quantity -= amount
+
     println("Stock updated. New quantity: ${product.quantity}")
 }
 
 /**
- * Displays only the products whose quantity has fallen below their minimum stock level.
+ * Displays products that are below their minimum stock level.
  */
 fun displayLowStock(products: MutableList<Product>) {
-    val lowStock = products.filter { it.quantity < it.minimumStock }
+    val lowStock = products.filter {
+        it.quantity < it.minimumStock
+    }
 
     if (lowStock.isEmpty()) {
         println("No products are low on stock.")
@@ -119,21 +128,27 @@ fun displayLowStock(products: MutableList<Product>) {
     }
 
     println("Low-stock products:")
+
     for (product in lowStock) {
-        println("ID: ${product.id} | ${product.name} - Qty: ${product.quantity} | Min: ${product.minimumStock}")
+        println(
+            "ID: ${product.id} | " +
+                    "${product.name} - " +
+                    "Qty: ${product.quantity} | " +
+                    "Min: ${product.minimumStock}"
+        )
     }
 }
 
 fun main() {
-    // Starting inventory with a few sample products
-    val products = mutableListOf<Product>()
-    products.add(Product(1, "Coffee", "Food", 15, 5))
-    products.add(Product(2, "Notebook", "Office", 30, 10))
-    products.add(Product(3, "Tea", "Food", 8, 5))
+    // Sample products used when the application starts.
+    val products = mutableListOf(
+        Product(1, "Coffee", "Food", 15, 5),
+        Product(2, "Notebook", "Office", 30, 10),
+        Product(3, "Tea", "Food", 8, 5)
+    )
 
     var running = true
 
-    // Keep showing the menu until the user chooses to exit (option 6)
     while (running) {
         println()
         println("===========================")
@@ -155,10 +170,12 @@ fun main() {
             3 -> addStock(products)
             4 -> removeStock(products)
             5 -> displayLowStock(products)
+
             6 -> {
                 println("Goodbye!")
                 running = false
             }
+
             else -> println("Invalid option")
         }
     }
